@@ -35,7 +35,23 @@ function getData() { firebase.database().ref("/"+room_name).on('value', function
 
 console.log(firebase_message_id);
 console.log(message_data);
+name= message_data['name'];
+likes= message_data['likes'];
+message= message_data['message'];
+name_tag= "<h4>"+name+"<img class='user_tick' src='tick.png'></h4>";
+message_tag= "<h4 class='message_h4'>"+message+"</h4>";
+like_tag= "<button class='btn btn-warning' id='"  + firebase_message_id+"' value="+likes+" onclick='update_likes(this.id)'>";
+span_tag="<span class='glyphicon glyphicon-thumbs-up'> likes "+likes+"</span></button><hr>";
+row= name_tag+message_tag+like_tag+span_tag;
+document.getElementById("output").innerHTML+=row;
 
 //End code
       } });  }); }
 getData();
+function update_likes(id){
+   current_likes=   document.getElementById(id).value;
+   current_likes=   Number(current_likes)+1;
+   firebase.database().ref(room_name).child(id).update({
+         likes:current_likes,
+   })
+}
